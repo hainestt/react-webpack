@@ -19,7 +19,19 @@ class DevConfig extends BaseConfig {
                 headers: {},
                 proxy: {} // proxy, for mock server
 
-            }
+            },
+            optimization: {
+                splitChunks: {
+                    chacheGroups: {
+                        vendor: {
+                            name: 'vendor',
+                            test: /[\\/]node_modules[\\/]/,
+                            chunks: 'all',
+                            minSize: 1
+                        }
+                    }
+                }
+            },
             
         }
     }

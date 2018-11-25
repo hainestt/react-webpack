@@ -2,28 +2,20 @@
 
 const path = require('path')
 const fs = require('fs')
-const webpack = require('webpack')
 
 class BaseConfig {
     constructor () {
         this._config = {}
-        this._path = []
+        this._entry = {}
     }
 
+    // properties
     get config () {
         return this._config
     }
 
     set config (data) {
         this._config = Object.assign({}, this.defaultSettings, data)
-    }
-
-    filePath (path) {
-        let isExist = fs.existsSync(path)
-
-        if (isExist) {
-
-        }
     }
 
     get defaultSettings () {
@@ -93,21 +85,57 @@ class BaseConfig {
                     }
                 ]
             },
-            splitChunks: {
-                chacheGroups: {
-                    vendor: {
-                        name: 'vendor',
-                        test: /[\\/]node_modules[\\/]/,
-                        chunks: 'all',
-                        minSize: 1
-                    }
-                }
-            },
+            
             plugins: []
 
 
         }
     }
+
+    get entry () {
+        this._entry = Object.assign({}, this.getEntry(`${this.srcPath}/pages`))
+        return this._entry
+    }
+
+    set entry (entry = {}) {
+        this._entry = Object.assign({}, this._entry, entry)
+    }
+
+    get srcPath () {
+        return path.join(__dirname, '../src')
+    }
+
+    // methods
+    getFilePath (path) {
+        let isExist = fs.existsSync(path)
+        let pathArr = []
+
+        if (isExist) {
+            let files = fs.readdirSync(path)
+
+            files.map(item => {
+                let currentPath = `${path}/${item}`
+                let isDirectory = fs.statSync(currentPath).isDirectory()
+
+                if (isDirectory) {
+                    pathArr.push(item)
+                }
+            })
+        }
+
+        return pathArr
+    }
+
+    getEntry (path) {
+        let entry = {}
+
+        this.getFilePath(path).map(item => {
+            entry[`${item}/${item}`] = `${path}/${item}/index.js`
+        })
+
+        return entry
+    }
+
 }
 
 module.exports = BaseConfig
