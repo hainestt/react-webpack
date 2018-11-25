@@ -11,7 +11,18 @@ class DevConfig extends BaseConfig {
         this.config = {
             devtool: 'cheap-module-source-map',
             mode: 'development',
+            devServer: {
+                host: '127.0.0.1',
+                port: 3038,
+                compress: true,
+                open: true, // open browser
+                headers: {},
+                proxy: {} // proxy, for mock server
+
+            }
             
         }
     }
 }
+
+module.exports = DevConfig

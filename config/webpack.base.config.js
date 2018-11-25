@@ -7,6 +7,7 @@ const webpack = require('webpack')
 class BaseConfig {
     constructor () {
         this._config = {}
+        this._path = []
     }
 
     get config () {
@@ -17,7 +18,13 @@ class BaseConfig {
         this._config = Object.assign({}, this.defaultSettings, data)
     }
 
+    filePath (path) {
+        let isExist = fs.existsSync(path)
 
+        if (isExist) {
+
+        }
+    }
 
     get defaultSettings () {
 
