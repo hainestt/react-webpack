@@ -1,7 +1,7 @@
 const webpackConfig = require('./config/webpack')
 const defaultEnv = 'develop'
 
-module.exports = (env) => { //'env' is passed in from command line
+module.exports = (env) => { //'env' is passed from command line
     let CurrentConfig // 中介者模式的使用
 
     if (!!webpackConfig[env]) {

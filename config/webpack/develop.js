@@ -1,8 +1,5 @@
 'use strict'
 
-const path = require('path')
-const fs = require('fs')
-const webpack = require('webpack')
 const BaseConfig = require('./base')
 
 class DevConfig extends BaseConfig {
