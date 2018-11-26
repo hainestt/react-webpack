@@ -3,7 +3,7 @@
 const path = require('path')
 const fs = require('fs')
 const webpack = require('webpack')
-const BaseConfig = require('./webpack.base.config')
+const BaseConfig = require('./base')
 
 class DevConfig extends BaseConfig {
     constructor () {

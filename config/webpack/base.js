@@ -5,6 +5,7 @@ const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
+
 class BaseConfig {
     constructor () {
         this._config = {}
@@ -22,7 +23,7 @@ class BaseConfig {
 
     get splitChunks () {
         return {
-            chacheGroups: {
+            cacheGroups: {
                 vendor: {
                     name: 'vendor',
                     test: /[\\/]node_modules[\\/]/,
@@ -39,7 +40,7 @@ class BaseConfig {
             devtool: 'eval',
             entry: 'index.js',
             output: {
-                path: path.join(__dirname, '../dist/js/'),
+                path: path.resolve(process.cwd(), 'dist/js/'),
                 publicPath: 'dist/js',
                 filename: '[name].js',
                 // chunkFilename: '[name].js'
@@ -64,7 +65,9 @@ class BaseConfig {
                     {
                         test: /\.(scss|css)$/,
                         use: [
-                            process.env.NODE_ENV == 'development' ? {loader: 'style-loader'} : MiniCssExtractPlugin.loader,
+                            {
+                                loader: process.env.NODE_ENV == 'development' ? 'style-loader' : MiniCssExtractPlugin.loader
+                            },
                             {
                                 loader: 'css-loader'
                             },

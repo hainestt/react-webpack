@@ -1,5 +1,5 @@
 
-const BaseConfig = require('./webpack.base.config')
+const BaseConfig = require('./base')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
@@ -29,3 +29,5 @@ class ProductConfig extends BaseConfig {
         }
     }
 }
+
+module.exports = ProductConfig
