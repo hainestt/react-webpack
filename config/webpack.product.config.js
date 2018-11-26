@@ -1,6 +1,7 @@
 
 const BaseConfig = require('./webpack.base.config')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 class ProductConfig extends BaseConfig {
     constructor () {
@@ -9,16 +10,7 @@ class ProductConfig extends BaseConfig {
         this.config = {
             optimization: {
                 optimization: {
-                    splitChunks: {
-                        chacheGroups: {
-                            vendor: {
-                                name: 'vendor',
-                                test: /[\\/]node_modules[\\/]/,
-                                chunks: 'all',
-                                minSize: 1
-                            }
-                        }
-                    }
+                    splitChunks: this.splitChunks
                 },
                 minimizer: [
                     new UglifyJsPlugin({
@@ -29,12 +21,11 @@ class ProductConfig extends BaseConfig {
                                 drop_debugger: false
                             }
                         }
-                    })
+                    }),
+
+                    new OptimizeCSSAssetsPlugin({})
                 ]
             }
         }
     }
 }
-
-let a = new ProductConfig()
-console.log(a)

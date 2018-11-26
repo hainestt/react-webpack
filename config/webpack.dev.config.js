@@ -21,16 +21,7 @@ class DevConfig extends BaseConfig {
 
             },
             optimization: {
-                splitChunks: {
-                    chacheGroups: {
-                        vendor: {
-                            name: 'vendor',
-                            test: /[\\/]node_modules[\\/]/,
-                            chunks: 'all',
-                            minSize: 1
-                        }
-                    }
-                }
+                splitChunks: this.splitChunks
             },
             
         }

@@ -2,6 +2,8 @@
 
 const path = require('path')
 const fs = require('fs')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 class BaseConfig {
     constructor () {
@@ -16,6 +18,19 @@ class BaseConfig {
 
     set config (data) {
         this._config = Object.assign({}, this.defaultSettings, data)
+    }
+
+    get splitChunks () {
+        return {
+            chacheGroups: {
+                vendor: {
+                    name: 'vendor',
+                    test: /[\\/]node_modules[\\/]/,
+                    chunks: 'all',
+                    minSize: 1
+                }
+            }
+        }
     }
 
     get defaultSettings () {
@@ -47,11 +62,9 @@ class BaseConfig {
                         loader: 'babel-loader'
                     },
                     {
-                        test: /\.scss$/,
+                        test: /\.(scss|css)$/,
                         use: [
-                            {
-                                loader: 'style-loader'
-                            }, 
+                            process.env.NODE_ENV == 'development' ? {loader: 'style-loader'} : MiniCssExtractPlugin.loader,
                             {
                                 loader: 'css-loader'
                             },
@@ -86,7 +99,13 @@ class BaseConfig {
                 ]
             },
             
-            plugins: []
+            plugins: [
+                ...this.htmlConfig(),
+                new MiniCssExtractPlugin({
+                    filename: '[name].css',
+                    chunkFilename: '[id].css'
+                })
+            ]
 
 
         }
@@ -134,6 +153,30 @@ class BaseConfig {
         })
 
         return entry
+    }
+
+    htmlConfig () {
+        let htmlArr = []
+        this.getFilePath(this.srcPath).map(item => {
+            let infoData = JSON.parse(fs.readFileSync(`${this.srcPath}/${item}/index.json`, 'utf-8'))
+            htmlArr.push(new HtmlWebpackPlugin({
+                title: !!infoData.title ? infoData.title: '',
+                meta: {
+                    keywords: !!infoData.keywords ? infoData.keywords : '',
+                    description: !!infoData.description ? infoData.description : ''
+                },
+                template: `${this.srcPath}/app.html`,
+                filename: `${item}/index.html`,
+                chunks: [`${item}/${item}`],
+                minify: {
+                    removeComments: true,
+                    collapseWhitespace: true,
+                }
+
+            }))
+        })
+
+       return htmlArr 
     }
 
 }
