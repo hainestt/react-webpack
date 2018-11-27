@@ -4,7 +4,7 @@ const path = require('path')
 const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 
 class BaseConfig {
     constructor () {
@@ -29,13 +29,14 @@ class BaseConfig {
                     test: /[\\/]node_modules[\\/]/,
                     chunks: 'all',
                     minSize: 1
-                },
-                styles: {
-                    name: 'styles',
-                    test: /\.css$/,
-                    chunks: 'all',
-                    enforce: true
                 }
+                // ,
+                // styles: {
+                //     name: 'styles',
+                //     test: /\.css$/,
+                //     chunks: 'all',
+                //     enforce: true
+                // }
             }
         }
     }
@@ -47,7 +48,7 @@ class BaseConfig {
             entry: this.getEntry(path.resolve(process.cwd(), 'src/pages/')),
             output: {
                 path: path.resolve(process.cwd(), 'dist/'),
-                publicPath: 'dist/',
+                // publicPath: 'dist/',
                 filename: '[name].js',
                 // chunkFilename: '[name].js'
             },
@@ -87,7 +88,8 @@ class BaseConfig {
                             {
                                 loader: 'url-loader',
                                 options: {
-                                    name: './images/[name].[ext]',
+                                    name: 'images/[name].[ext]',
+                                    publicPath: '../',
                                     limit: 8192  //8KB
                                 }
                             }
@@ -99,6 +101,11 @@ class BaseConfig {
             
             plugins: [
                 ...this.htmlConfigs,
+                new HtmlWebpackIncludeAssetsPlugin({
+                    assets: ['vendor.js'],
+                    append: false,
+                    // publicPath: 'dist/'
+                }),
                 new MiniCssExtractPlugin({
                     filename: '[name].css',
                     chunkFilename: '[id].css'

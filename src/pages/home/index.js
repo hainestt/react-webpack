@@ -1,8 +1,5 @@
-/***
- * js entry
- */
-
 import React from 'react'
+import ReactDOM from 'react-dom'
 import tiger from '../../assets/tiger.png'
 import './index.scss'
 
