@@ -6,11 +6,11 @@
         ["@babel/preset-react"]
     ],
     "plugins": [
-        ["@babel/plugin-transfrom-runtime", {
-            "corejs": false,
-            "helpers": true,
-            "regenerator": true,
-            "useESModules": false
-        }]
+        // ["@babel/plugin-transfrom-runtime", {
+        //     "corejs": false,
+        //     "helpers": true,
+        //     "regenerator": true,
+        //     "useESModules": false
+        // }]
     ]
 }
