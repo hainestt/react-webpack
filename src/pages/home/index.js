@@ -4,6 +4,7 @@
 
 import React from 'react'
 import tiger from '../../assets/tiger.png'
+import './index.scss'
 
 class Home extends React.Component {
     constructor (props) {

@@ -29,6 +29,12 @@ class BaseConfig {
                     test: /[\\/]node_modules[\\/]/,
                     chunks: 'all',
                     minSize: 1
+                },
+                styles: {
+                    name: 'styles',
+                    test: /\.css$/,
+                    chunks: 'all',
+                    enforce: true
                 }
             }
         }
@@ -44,22 +50,17 @@ class BaseConfig {
                 publicPath: 'dist/',
                 filename: '[name].js',
                 // chunkFilename: '[name].js'
-                chunkFilename: '[name].[chunkhash].js'
             },
             module: {
                 rules: [
-                    {
-                        enforce: 'pre',
-                        test: /\.jsx?$/,
-                        loader: 'eslint-loader'
-                    },
+                    // {
+                    //     enforce: 'pre',
+                    //     test: /\.jsx?$/,
+                    //     loader: 'eslint-loader'
+                    // },
                     {
                         test: /\.jsx?$/,
                         exclude: /node_modules/,
-                        loader: 'babel-loader'
-                    },
-                    {
-                        test: /\.js$/,
                         loader: 'babel-loader'
                     },
                     {
@@ -72,14 +73,7 @@ class BaseConfig {
                                 loader: 'css-loader'
                             },
                             {
-                                loader: 'postcss-loader',
-                                options: {
-                                    plugins: [
-                                        require('autoprefixer')({
-                                            browsers: ['last 5 versions']
-                                        })
-                                   ]
-                                }
+                                loader: 'postcss-loader'
                             },
                             {
                                 loader: 'sass-loader',
@@ -93,6 +87,7 @@ class BaseConfig {
                             {
                                 loader: 'url-loader',
                                 options: {
+                                    name: './images/[name].[ext]',
                                     limit: 8192  //8KB
                                 }
                             }
@@ -103,7 +98,7 @@ class BaseConfig {
             },
             
             plugins: [
-                ...this.htmlConfig(),
+                ...this.htmlConfigs,
                 new MiniCssExtractPlugin({
                     filename: '[name].css',
                     chunkFilename: '[id].css'
@@ -124,8 +119,12 @@ class BaseConfig {
     }
 
     get srcPath () {
-        return path.join(__dirname, '../src')
+        return path.resolve(process.cwd(), 'src/')
     }
+
+    get htmlConfigs () {
+        return this.htmlConfig()
+    } 
 
     // methods
     getFilePath (path) {
@@ -160,8 +159,10 @@ class BaseConfig {
 
     htmlConfig () {
         let htmlArr = []
-        this.getFilePath(this.srcPath).map(item => {
-            let infoData = JSON.parse(fs.readFileSync(`${this.srcPath}/${item}/index.json`, 'utf-8'))
+        let pagesPath = `${this.srcPath}/pages`
+        this.getFilePath(pagesPath).map(item => {
+            
+            let infoData = JSON.parse(fs.readFileSync(`${pagesPath}/${item}/index.json`, 'utf-8'))
             htmlArr.push(new HtmlWebpackPlugin({
                 title: !!infoData.title ? infoData.title: '',
                 meta: {
@@ -172,8 +173,8 @@ class BaseConfig {
                 filename: `${item}/index.html`,
                 chunks: [`${item}/${item}`],
                 minify: {
-                    removeComments: true,
-                    collapseWhitespace: true,
+                    // removeComments: true,
+                    // collapseWhitespace: true,
                 }
 
             }))

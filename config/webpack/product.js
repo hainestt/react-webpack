@@ -11,9 +11,7 @@ class ProductConfig extends BaseConfig {
             devtool: 'source-map',
             mode: 'production',
             optimization: {
-                optimization: {
-                    splitChunks: this.splitChunks
-                },
+                splitChunks: this.splitChunks,
                 minimizer: [
                     new UglifyJsPlugin({
                         test: /\.js$/,
