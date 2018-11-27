@@ -38,10 +38,10 @@ class BaseConfig {
 
         return {
             devtool: 'eval',
-            entry: 'index.js',
+            entry: this.getEntry(path.resolve(process.cwd(), 'src/pages/')),
             output: {
-                path: path.resolve(process.cwd(), 'dist/js/'),
-                publicPath: 'dist/js',
+                path: path.resolve(process.cwd(), 'dist/'),
+                publicPath: 'dist/',
                 filename: '[name].js',
                 // chunkFilename: '[name].js'
                 chunkFilename: '[name].[chunkhash].js'

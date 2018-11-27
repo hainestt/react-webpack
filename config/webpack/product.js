@@ -8,6 +8,8 @@ class ProductConfig extends BaseConfig {
         super ()
 
         this.config = {
+            devtool: 'source-map',
+            mode: 'production',
             optimization: {
                 optimization: {
                     splitChunks: this.splitChunks
