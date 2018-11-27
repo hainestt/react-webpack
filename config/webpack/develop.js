@@ -1,5 +1,6 @@
 'use strict'
 
+const path = require('path')
 const BaseConfig = require('./base')
 
 class DevConfig extends BaseConfig {
@@ -9,12 +10,13 @@ class DevConfig extends BaseConfig {
             devtool: 'cheap-module-source-map',
             mode: 'development',
             devServer: {
+                contentBase: path.resolve(process.cwd(), "dist"),
                 host: '127.0.0.1',
                 port: 3038,
                 compress: true,
                 open: true, // open browser
                 headers: {},
-                proxy: {} // proxy, for mock server
+                proxy: {} // proxy, for api server
 
             },
             optimization: {

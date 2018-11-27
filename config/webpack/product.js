@@ -7,6 +7,28 @@ class ProductConfig extends BaseConfig {
     constructor () {
         super ()
 
+        // this.config = Object.assign(this.config, {
+        //     devtool: 'source-map',
+        //     mode: 'production',
+        //     optimization: {
+        //         splitChunks: this.splitChunks,
+        //         minimizer: [
+        //             new UglifyJsPlugin({
+        //                 test: /\.js$/,
+        //                 uglifyOptions: {
+        //                     warnings: false,
+        //                     compress: {
+        //                         drop_debugger: true
+        //                     }
+        //                 }
+        //             })
+        //         ]
+        //     },
+        //     plugins: [
+        //         new OptimizeCSSAssetsPlugin({})
+        //     ]
+        // })
+
         this.config = {
             devtool: 'source-map',
             mode: 'production',
@@ -18,14 +40,13 @@ class ProductConfig extends BaseConfig {
                         uglifyOptions: {
                             warnings: false,
                             compress: {
-                                drop_debugger: false
+                                drop_debugger: true
                             }
                         }
                     }),
-
                     new OptimizeCSSAssetsPlugin({})
                 ]
-            }
+            },
         }
     }
 }
